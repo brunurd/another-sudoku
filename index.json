@@ -1,5 +1,6 @@
 {
-    "data": [
-        "https://lavaleak.github.io/another-sudoku/data/template.json"
-    ]
+  "data": [
+    "https://lavaleak.github.io/another-sudoku/data/Just%20a%20Test.json",
+    "https://lavaleak.github.io/another-sudoku/data/just-a-test.json"
+  ]
 }
