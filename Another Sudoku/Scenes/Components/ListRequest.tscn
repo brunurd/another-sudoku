@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cdjmgmllxdh4o"]
+
+[ext_resource type="Script" path="res://AnotherSudokuLib/Components/ListRequest.cs" id="1_xqf1k"]
+
+[node name="ListRequest" type="HTTPRequest"]
+script = ExtResource("1_xqf1k")
