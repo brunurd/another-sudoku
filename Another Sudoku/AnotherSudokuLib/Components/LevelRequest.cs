@@ -48,7 +48,7 @@ namespace AnotherSudokuLib.Components
         {
             if (FileAccess.FileExists(_levelPathData.cachePath))
             {
-                Logger.Log("Loading level data from cache.", new Logger.Detail("path", _levelPathData.cachePath));
+                Logger.Log($"Loading level \"{_levelPathData.levelName}\" data from cache.", new Logger.Detail("path", _levelPathData.cachePath));
                 DirAccess.MakeDirRecursiveAbsolute(Constants.Persistent.LevelsDirCache);
                 using var file = FileAccess.Open(_levelPathData.cachePath, FileAccess.ModeFlags.Read);
                 var contents = file.GetAsText();
@@ -58,7 +58,7 @@ namespace AnotherSudokuLib.Components
             }
             if (ResourceLoader.Exists(_levelPathData.localDataPath))
             {
-                Logger.Log("Loading level data from local resource.", new Logger.Detail("path", _levelPathData.localDataPath));
+                Logger.Log($"Loading level \"{_levelPathData.levelName}\" data from local resource.", new Logger.Detail("path", _levelPathData.localDataPath));
                 var levelResource = ResourceLoader.Load<Json>(_levelPathData.localDataPath);
                 var json = Json.ParseString(
                                 levelResource.Get("data").AsString())
@@ -70,7 +70,7 @@ namespace AnotherSudokuLib.Components
         private void SaveDataToCache(WebRequest.Response response)
         {
             Logger.Log(
-                "Saving level data to cache.",
+                $"Saving level \"{_levelPathData.levelName}\" data to cache.",
                 new Logger.Detail("path", _levelPathData.cachePath)
             );
             DirAccess.MakeDirRecursiveAbsolute(Constants.Persistent.LevelsDirCache);
@@ -106,7 +106,7 @@ namespace AnotherSudokuLib.Components
             _levelData = new LevelData(cells.ToArray());
 
             Logger.Log(
-                "Level loaded.",
+                $"Level \"{_levelPathData.levelName}\" loaded.",
                 new Logger.Detail("author", _levelAuthor.ToString()),
                 new Logger.Detail("levelData", _levelData.ToString())
             );

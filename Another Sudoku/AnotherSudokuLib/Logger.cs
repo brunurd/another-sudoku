@@ -145,7 +145,7 @@ namespace AnotherSudokuLib
         {
             var log = new LogData(
                 message,
-                details: new List<Detail>(details),
+                details: new List<Detail>(details == null ? new Detail[]{} : details),
                 level
             );
             _logger._logs.Add(log);
