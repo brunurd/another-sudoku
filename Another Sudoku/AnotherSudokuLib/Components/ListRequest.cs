@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Godot;
 
@@ -5,26 +6,32 @@ namespace AnotherSudokuLib.Components
 {
     public partial class ListRequest : HttpRequest
     {
-        private Godot.Collections.Dictionary<string, Variant> _temporaryRequestResponse;
         private string[] _listData;
         private List<LevelRequest> _levelsRequests;
+        private WebRequest _webRequest;
 
         public override void _Ready()
         {
-            _levelsRequests = new List<LevelRequest>();
-            RequestCompleted += LoadContents;
-            Request(Constants.Url.LevelList);
+            _webRequest = new WebRequest(httpRequest: this, url: Constants.Url.LevelList);
+            _webRequest.fallback += GetDataFromCache;
+            _webRequest.onSuccess += InstantiateLevels;
+            _webRequest.Request();
         }
 
-        private void LoadContents(long result, long responseCode, string[] headers, byte[] body)
-        {
-            var json = Json.ParseString(body.GetStringFromUtf8());
-            _listData = json.AsGodotDictionary<string, Variant>()["data"].AsStringArray();
-
+        private void InstantiateLevels(WebRequest.Response response) {
+            _levelsRequests = new List<LevelRequest>();
+            var json = response.Json();
+            _listData = json["data"].AsStringArray();
             foreach (var url in _listData)
             {
                 InstantiateLevelRequest(url);
             }
+        }
+
+        private void GetDataFromCache()
+        {
+            Logger.Log("TODO: Get data from cache.");
+            throw new NotImplementedException();
         }
 
         private void InstantiateLevelRequest(string url)
