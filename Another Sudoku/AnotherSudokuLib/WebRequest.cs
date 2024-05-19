@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using Godot;
 
 namespace AnotherSudokuLib
@@ -10,19 +11,42 @@ namespace AnotherSudokuLib
             public readonly long result;
             public readonly long responseCode;
             public readonly string[] headers;
-            public readonly byte[] body;
+            public readonly byte[] rawBody;
+            public readonly string body;
 
             public Response(long result, long responseCode, string[] headers, byte[] body)
             {
                 this.result = result;
                 this.responseCode = responseCode;
                 this.headers = headers;
-                this.body = body;
+                this.rawBody = body;
+                this.body = Encoding.UTF8.GetString(body, 0, body.Length);
             }
 
             public Godot.Collections.Dictionary<string,Variant> Json() {
-                var json = Godot.Json.ParseString(body.GetStringFromUtf8());
-                return json.AsGodotDictionary<string, Variant>();
+                var emptyDict = new Godot.Collections.Dictionary<string,Variant>();
+                
+                if (string.IsNullOrEmpty(body)) {
+                    return emptyDict;
+                }
+
+                var jsonContentType = Array.Find(headers, header => header.Contains("application/json"));
+
+                if (jsonContentType == null) {
+                    return emptyDict;
+                }
+
+                try {
+                    var json = Godot.Json.ParseString(body);
+                    return json.AsGodotDictionary<string, Variant>();
+                } catch (Exception err) {
+                    Logger.Log(
+                        err.Message,
+                        Logger.LogLevel.Error,
+                        new Logger.Detail("body", body)
+                    );
+                    return emptyDict;
+                }
             }
         }
 

@@ -145,21 +145,11 @@ namespace AnotherSudokuLib
         {
             var log = new LogData(
                 message,
-                ProcessDetails(details),
+                details: new List<Detail>(details),
                 level
             );
             _logger._logs.Add(log);
             Transports?.Invoke(log);
-        }
-
-        private List<Detail> ProcessDetails(Detail[] details)
-        {
-            // TODO: Maybe this if statement is not necessary, test the List initialization in those cases.
-            if (details == null || details.Length == 0)
-            {
-                return new List<Detail>();
-            }
-            return new List<Detail>(details);
         }
     }
 }
