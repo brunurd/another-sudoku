@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Godot;
 using Godot.Collections;
 using AnotherSudokuLib.Data;
+using System;
 
 namespace AnotherSudokuLib.Components
 {
@@ -10,6 +11,7 @@ namespace AnotherSudokuLib.Components
         private string _url;
         private LevelAuthor _levelAuthor;
         private LevelData _levelData;
+        private WebRequest _webRequest;
 
         public LevelAuthor LevelAuthor {
             get {
@@ -25,18 +27,26 @@ namespace AnotherSudokuLib.Components
 
         public void LoadLevelDataFromRequest(string url) {
             _url = url;
-            RequestCompleted += LoadContents;
-            Request(url);
+            _webRequest = new WebRequest(this, _url);
+            _webRequest.fallback += GetDataFromCache;
+            _webRequest.onSuccess += LoadLevels;
+            _webRequest.Request();
         }
 
-        private void LoadContents(long result, long responseCode, string[] headers, byte[] body)
+        private void GetDataFromCache()
         {
-            var json = Json.ParseString(body.GetStringFromUtf8());
+            Logger.Log("TODO: Get data from cache.");
+            throw new NotImplementedException();
+        }
 
-            var author = json.AsGodotDictionary<string, Variant>()["author"].AsGodotDictionary<string,string>();
+        private void LoadLevels(WebRequest.Response response)
+        {
+            var json = response.Json();
+
+            var author = json["author"].AsGodotDictionary<string,string>();
             _levelAuthor = new LevelAuthor(author["name"], author["email"], author["website"]);
 
-            var data = json.AsGodotDictionary<string, Variant>()["data"].AsGodotDictionary<string,Array<int>>();
+            var data = json["data"].AsGodotDictionary<string,Array<int>>();
             var cells = new List<LevelCellData>();
 
             foreach (KeyValuePair<string,Array<int>> cell in data) {

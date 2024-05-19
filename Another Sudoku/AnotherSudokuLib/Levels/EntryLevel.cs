@@ -9,8 +9,6 @@ namespace AnotherSudokuLib.Levels
 
         public override void _Ready()
         {
-            GD.Print(OS.IsUserfsPersistent());
-
             var listRequestResource = ResourceLoader.Load<PackedScene>(Constants.Resources.Components.ListRequest);
             var listRequest = listRequestResource.Instantiate() as ListRequest;
             AddChild(listRequest);
