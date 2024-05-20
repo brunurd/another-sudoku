@@ -1,30 +1,21 @@
 using System.Collections.Generic;
 using Godot;
 using AnothrSudokuLib.Data;
+using System;
 
 namespace AnothrSudokuLib.Components
 {
     public partial class LevelRequest : HttpRequest
     {
         private LevelPathData _levelPathData;
-        private LevelAuthor _levelAuthor;
-        private LevelData _levelData;
         private WebRequest _webRequest;
+        private Level _level;
+        private bool _isLoaded = false;
+        public Action<Level> onLevelLoaded;
 
-        public LevelAuthor LevelAuthor
+        public bool IsLoaded
         {
-            get
-            {
-                return _levelAuthor;
-            }
-        }
-
-        public LevelData LevelData
-        {
-            get
-            {
-                return _levelData;
-            }
+            get { return _isLoaded; }
         }
 
         public void LoadLevelData(LevelPathData levelPathData)
@@ -33,7 +24,7 @@ namespace AnothrSudokuLib.Components
             _webRequest = new WebRequest(this, _levelPathData.url);
             _webRequest.fallback += GetDataFromCache;
             _webRequest.onSuccess += SaveDataToCache;
-            _webRequest.onSuccess += LoadLevelsFromRequest;
+            _webRequest.onSuccess += LoadLevelFromRequest;
             _webRequest.Request();
         }
 
@@ -41,7 +32,7 @@ namespace AnothrSudokuLib.Components
         {
             var author = dict["author"].AsGodotDictionary<string, string>();
             var data = dict["data"].AsGodotDictionary<string, int[]>();
-            LoadLevels(author, data);
+            LoadLevel(author, data);
         }
 
         private void GetDataFromCache()
@@ -52,11 +43,10 @@ namespace AnothrSudokuLib.Components
                 DirAccess.MakeDirRecursiveAbsolute(Constants.Persistent.LevelsDirCache);
                 using var file = FileAccess.Open(_levelPathData.cachePath, FileAccess.ModeFlags.Read);
                 var contents = file.GetAsText();
-                var json = Json.ParseString(contents).AsGodotDictionary<string,Variant>();
+                var json = Json.ParseString(contents).AsGodotDictionary<string, Variant>();
                 ProcessDataDictionaryFromJson(json);
-                return;
             }
-            if (ResourceLoader.Exists(_levelPathData.localDataPath))
+            else if (ResourceLoader.Exists(_levelPathData.localDataPath))
             {
                 Logger.Log($"Loading level \"{_levelPathData.levelName}\" data from local resource.", new Logger.Detail("path", _levelPathData.localDataPath));
                 var levelResource = ResourceLoader.Load<Json>(_levelPathData.localDataPath);
@@ -64,6 +54,15 @@ namespace AnothrSudokuLib.Components
                                 levelResource.Get("data").AsString())
                                 .AsGodotDictionary<string, Variant>();
                 ProcessDataDictionaryFromJson(json);
+            }
+            else
+            {
+                Logger.Log(
+                    $"Unfounded level \"{_levelPathData.levelName}\" data (not found in: http, cache or local).",
+                    Logger.LogLevel.Error
+                );
+                _isLoaded = true;
+                onLevelLoaded?.Invoke(new Level());
             }
         }
 
@@ -78,15 +77,15 @@ namespace AnothrSudokuLib.Components
             file.StoreString(response.body);
         }
 
-        private void LoadLevelsFromRequest(WebRequest.Response response)
+        private void LoadLevelFromRequest(WebRequest.Response response)
         {
             var json = response.Json();
             ProcessDataDictionaryFromJson(json);
         }
 
-        private void LoadLevels(Godot.Collections.Dictionary<string, string> author, Godot.Collections.Dictionary<string, int[]> data)
+        private void LoadLevel(Godot.Collections.Dictionary<string, string> author, Godot.Collections.Dictionary<string, int[]> data)
         {
-            _levelAuthor = new LevelAuthor(author["name"], author["email"], author["website"]);
+            var levelAuthor = new LevelAuthor(author["name"], author["email"], author["website"]);
             var cells = new List<LevelCellData>();
 
             foreach (KeyValuePair<string, int[]> cell in data)
@@ -103,13 +102,18 @@ namespace AnothrSudokuLib.Components
                 ));
             }
 
-            _levelData = new LevelData(cells.ToArray());
+            var levelData = new LevelData(cells.ToArray());
+
+            _level = new Level(_levelPathData.levelName, levelAuthor, levelData);
 
             Logger.Log(
-                $"Level \"{_levelPathData.levelName}\" loaded.",
-                new Logger.Detail("author", _levelAuthor.ToString()),
-                new Logger.Detail("levelData", _levelData.ToString())
+                $"Level \"{_level.levelName}\" loaded.",
+                new Logger.Detail("author", _level.author.ToString()),
+                new Logger.Detail("levelData", _level.data.ToString())
             );
+
+            _isLoaded = true;
+            onLevelLoaded?.Invoke(_level);
         }
     }
 }

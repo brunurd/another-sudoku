@@ -4,7 +4,8 @@ namespace AnothrSudokuLib.Data
     {
         public readonly LevelCellData[] cells;
 
-        public LevelData(LevelCellData[] cells) {
+        public LevelData(LevelCellData[] cells)
+        {
             this.cells = cells;
         }
 

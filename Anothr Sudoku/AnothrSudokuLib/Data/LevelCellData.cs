@@ -9,7 +9,8 @@ namespace AnothrSudokuLib.Data
         public readonly int number;
         public readonly bool marked;
 
-        public LevelCellData(int square, int x, int y, int number, bool marked) {
+        public LevelCellData(int square, int x, int y, int number, bool marked)
+        {
             this.square = square;
             this.x = x;
             this.y = y;

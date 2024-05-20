@@ -6,7 +6,8 @@ namespace AnothrSudokuLib.Data
         public readonly string email;
         public readonly string website;
 
-        public LevelAuthor(string name, string email, string website) {
+        public LevelAuthor(string name, string email, string website)
+        {
             this.name = name;
             this.email = email;
             this.website = website;

@@ -50,26 +50,51 @@ namespace AnothrSudokuLib
             }
         }
 
+        public enum State
+        {
+            NotStarted = 0,
+            Loading = 1,
+            ReTrying = 2,
+            Failed = 3,
+            Complete = 4,
+        }
+
         private readonly HttpRequest _httpRequest;
         private readonly string _url;
+        public bool verbose;
         public short maxAttemps;
         private short _requestCallAttemp = 1;
+        private State _state;
+
         public Action fallback;
         public Action<Response> onSuccess;
         public Action<Response> onFail;
 
-        public WebRequest(HttpRequest httpRequest, string url, short maxAttemps = 3) {
+        public State CurrentState
+        {
+            get { return _state; }
+        }
+
+        public WebRequest(HttpRequest httpRequest, string url, short maxAttemps = 3, bool verbose = true) {
             _httpRequest = httpRequest;
             _url = url;
             this.maxAttemps = maxAttemps;
+            this.verbose = verbose;
+            _state = State.NotStarted;
             _httpRequest.RequestCompleted += OnRequestComplete;
         }
 
         public void Request()
         {
+            if (_state == State.NotStarted)
+            {
+                _state = State.Loading;
+            }
+
             if (_requestCallAttemp > maxAttemps)
             {
                 fallback?.Invoke();
+                _state = State.Failed;
                 return;
             }
 
@@ -77,6 +102,7 @@ namespace AnothrSudokuLib
             {
                 Logger.Log(
                     $"Calling: {_url}. attemp: {_requestCallAttemp}/{maxAttemps}.",
+                    verbose ? Logger.LogLevel.Info : Logger.LogLevel.Debug,
                     new Logger.Detail("url", _url),
                     new Logger.Detail("attemp", _requestCallAttemp),
                     new Logger.Detail("maxAttemps", maxAttemps)
@@ -87,6 +113,7 @@ namespace AnothrSudokuLib
             {
                 Logger.Log(err.Message, Logger.LogLevel.Error, new Logger.Detail("stackTrace", err.StackTrace));
                 _requestCallAttemp += 1;
+                _state = State.ReTrying;
                 Request();
             }
         }
@@ -100,6 +127,7 @@ namespace AnothrSudokuLib
                 LogResponse("REQUEST FAILED.", response, Logger.LogLevel.Error);
                 _requestCallAttemp += 1;
                 onFail?.Invoke(response);
+                _state = State.ReTrying;
                 Request();
                 return;
             }
@@ -107,13 +135,15 @@ namespace AnothrSudokuLib
             try
             {
                 onSuccess?.Invoke(response);
-                LogResponse("SUCCESSFUL REQUEST.", response);
+                LogResponse("SUCCESSFUL REQUEST.", response, verbose ? Logger.LogLevel.Info : Logger.LogLevel.Debug);
+                _state = State.Complete;
             }
             catch (Exception err)
             {
                 LogResponse($"REQUEST FAILED. {err.Message}", response, Logger.LogLevel.Error);
                 _requestCallAttemp += 1;
                 onFail?.Invoke(response);
+                _state = State.ReTrying;
                 Request();
             }
         }

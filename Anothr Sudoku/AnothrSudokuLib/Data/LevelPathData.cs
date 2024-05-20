@@ -18,8 +18,10 @@ namespace AnothrSudokuLib.Data
             this.localDataPath = "";
 
             var pattern = @".*\/(.*).json$";
-            foreach (Match match in Regex.Matches(url, pattern)) {
-                if (match.Groups.Count < 2) {
+            foreach (Match match in Regex.Matches(url, pattern))
+            {
+                if (match.Groups.Count < 2)
+                {
                     continue;
                 }
                 var encodedLevelName = match.Groups[1].Value;

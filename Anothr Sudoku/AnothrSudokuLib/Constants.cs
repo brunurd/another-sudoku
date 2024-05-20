@@ -4,6 +4,18 @@ namespace AnothrSudokuLib
     {
         public static class Resources
         {
+
+            public static class AutoLoad
+            {
+                public const string GameManager = "/root/GameManager";
+            }
+
+            public static class Levels
+            {
+                public const string EntryLevel = "res://Scenes/Levels/EntryLevel.tscn";
+                public const string MainMenu = "res://Scenes/Levels/MainMenu.tscn";
+            }
+
             public static class Components
             {
                 public const string LevelRequest = "res://Scenes/Components/LevelRequest.tscn";

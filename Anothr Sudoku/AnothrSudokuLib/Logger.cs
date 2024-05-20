@@ -143,6 +143,10 @@ namespace AnothrSudokuLib
 
         public void AnyLog(string message, LogLevel level, params Detail[] details)
         {
+            if (OS.HasFeature("release") && level >= LogLevel.Debug) {
+                return;
+            }
+
             var log = new LogData(
                 message,
                 details: new List<Detail>(details == null ? new Detail[]{} : details),
