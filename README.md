@@ -13,7 +13,7 @@ Templates list: <https://lavaleak.github.io/another-sudoku>
 ## Contribute
 ### How to build the `index.json`?
 
-I chose to use `node.js` to handle the json files, and [`volta`](https://docs.volta.sh/guide/#why-volta) and [`pnpm` ](https://pnpm.io/) to run, but those two are optional, can be used plane `npm` or `yarn` too.  
+I chose to use `node.js` to handle the json files, and [`volta`](https://docs.volta.sh/guide/#why-volta) and [`pnpm` ](https://pnpm.io/) to run, but those two are optional, can be used plain `npm` or `yarn` too.  
 
 #### 1. Install dependencies
 ```sh
