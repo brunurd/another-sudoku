@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dxpyeg2afhry1"]
 
-[ext_resource type="Script" path="res://AnotherSudokuLib/Levels/EntryLevel.cs" id="1_4jfnv"]
+[ext_resource type="Script" path="res://AnothrSudokuLib/Levels/EntryLevel.cs" id="1_4jfnv"]
 
 [node name="EntryLevel" type="Node"]
 script = ExtResource("1_4jfnv")

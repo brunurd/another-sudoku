@@ -1,7 +1,7 @@
 using Godot;
-using AnotherSudokuLib.Components;
+using AnothrSudokuLib.Components;
 
-namespace AnotherSudokuLib.Levels
+namespace AnothrSudokuLib.Levels
 {
     public partial class EntryLevel : Node
     {

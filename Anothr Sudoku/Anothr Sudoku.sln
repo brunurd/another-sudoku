@@ -1,6 +1,6 @@
 ﻿Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Another Sudoku", "Another Sudoku.csproj", "{D37D8A90-178C-451F-B95D-EC616EE57390}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anothr Sudoku", "Anothr Sudoku.csproj", "{D37D8A90-178C-451F-B95D-EC616EE57390}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

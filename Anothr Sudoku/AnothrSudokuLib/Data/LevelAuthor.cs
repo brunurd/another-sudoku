@@ -1,4 +1,4 @@
-namespace AnotherSudokuLib.Data
+namespace AnothrSudokuLib.Data
 {
     public struct LevelAuthor
     {

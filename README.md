@@ -1,4 +1,4 @@
-# Another Sudoku
+# Anothr Sudoku
 
 Work in progress Sudoku open source game.
 
@@ -6,7 +6,7 @@ Work in progress Sudoku open source game.
 
 ## Levels data
 
-Templates list: <https://lavaleak.github.io/another-sudoku>  
+Templates list: <https://lavaleak.github.io/anothr-sudoku>  
 
 ---
 

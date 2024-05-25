@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dqxryga1ekw5h"]
 
-[ext_resource type="Script" path="res://AnotherSudokuLib/Components/LevelRequest.cs" id="1_vuk5d"]
+[ext_resource type="Script" path="res://AnothrSudokuLib/Components/LevelRequest.cs" id="1_vuk5d"]
 
 [node name="LevelRequest" type="HTTPRequest"]
 script = ExtResource("1_vuk5d")

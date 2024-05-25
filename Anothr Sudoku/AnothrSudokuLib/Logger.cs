@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Godot;
 
-namespace AnotherSudokuLib
+namespace AnothrSudokuLib
 {
     public class Logger
     {

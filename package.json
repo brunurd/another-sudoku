@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "another-sudoku",
+  "name": "anothr-sudoku",
   "scripts": {
     "build": "node ./scripts/nodejs/build.js"
   },

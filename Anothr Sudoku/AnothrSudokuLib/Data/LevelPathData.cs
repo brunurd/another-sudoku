@@ -1,7 +1,7 @@
 using System.Text.RegularExpressions;
 using System.Web;
 
-namespace AnotherSudokuLib.Data
+namespace AnothrSudokuLib.Data
 {
     public struct LevelPathData
     {

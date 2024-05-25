@@ -26,7 +26,7 @@ const generateIndexJson = {
     const projectRoot = resolve(__dirname, "..", "..");
     const levelsPath = resolve(projectRoot, "data", "levels");
     const indexPath = resolve(projectRoot, "index.json");
-    const godotDataFolder = resolve(projectRoot, "Another Sudoku", "Data");
+    const godotDataFolder = resolve(projectRoot, "Anothr Sudoku", "Data");
     const godotIndexPath = resolve(godotDataFolder, "index.json");
     const godotLevelsPath = resolve(godotDataFolder, "levels");
 
@@ -38,7 +38,7 @@ const generateIndexJson = {
         return {
           file: resolve(levelsPath, file),
           url: encodeURI(
-            `https://lavaleak.github.io/another-sudoku/data/levels/${file}`
+            `https://lavaleak.github.io/anothr-sudoku/data/levels/${file}`
           ),
         };
       });
