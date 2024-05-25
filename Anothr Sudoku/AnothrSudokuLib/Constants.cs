@@ -1,4 +1,4 @@
-namespace AnotherSudokuLib
+namespace AnothrSudokuLib
 {
     public static class Constants
     {
@@ -13,7 +13,7 @@ namespace AnotherSudokuLib
 
         public static class Url
         {
-            public const string LevelList = "https://lavaleak.github.io/another-sudoku/index.json";
+            public const string LevelList = "https://lavaleak.github.io/anothr-sudoku/index.json";
         }
 
         public static class Persistent

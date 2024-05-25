@@ -10,14 +10,14 @@ config_version=5
 
 [application]
 
-config/name="Another Sudoku"
+config/name="Anothr Sudoku"
 run/main_scene="res://Scenes/Levels/EntryLevel.tscn"
 config/features=PackedStringArray("4.2", "C#", "GL Compatibility")
 config/icon="res://Textures/icon.svg"
 
 [dotnet]
 
-project/assembly_name="Another Sudoku"
+project/assembly_name="Anothr Sudoku"
 
 [rendering]
 

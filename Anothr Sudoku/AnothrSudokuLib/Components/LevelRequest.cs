@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using Godot;
-using AnotherSudokuLib.Data;
+using AnothrSudokuLib.Data;
 
-namespace AnotherSudokuLib.Components
+namespace AnothrSudokuLib.Components
 {
     public partial class LevelRequest : HttpRequest
     {

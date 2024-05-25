@@ -2,7 +2,7 @@ using System;
 using System.Text;
 using Godot;
 
-namespace AnotherSudokuLib
+namespace AnothrSudokuLib
 {
     public class WebRequest
     {
